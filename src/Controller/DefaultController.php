@@ -16,11 +16,11 @@ class DefaultController
     /**
      * @Route("/api", name="api_index", methods={"GET"})
      */
-    public function index(PostRepository $postRepository, SerializerInterface $serializer): Response
+    public function index( PostRepository $postRepository, SerializerInterface $serializer ): Response
     {
-        $posts = $postRepository->findAll();
-        $postsJson = $serializer->serialize($posts, 'json');
+        $posts     = $postRepository->findBy( [], [ 'id' => 'DESC' ] );
+        $postsJson = $serializer->serialize( $posts, 'json' );
 
-        return new JsonResponse($postsJson, 200, [], true);
+        return new JsonResponse( $postsJson, 200, [], true );
     }
 }

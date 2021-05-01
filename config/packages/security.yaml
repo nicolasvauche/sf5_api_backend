@@ -22,5 +22,5 @@ security:
                     - App\Security\TokenAuthenticator
 
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api, roles: ROLE_USER }

@@ -21,8 +21,10 @@ class AppFixtures
 
     public function load( ObjectManager $manager )
     {
+        // Faker
         $faker = Faker\Factory::create( 'fr_FR' );
 
+        // Posts
         $posts = array();
         for( $i = 0; $i < 10; $i ++ ) {
             $posts[ $i ] = new Post();
@@ -34,12 +36,20 @@ class AppFixtures
         }
         $manager->flush();
 
-        $user = new User();
-        $user->setName( 'Utilisateur test' )
-             ->setApiToken( $this->encoder->encodePassword( $user, 'test' ) )
+        // Users
+        $user1 = new User();
+        $user1->setName( 'Utilisateur test' )
+             ->setApiToken( $this->encoder->encodePassword( $user1, 'test' ) )
              ->setRoles( [ 'ROLE_USER' ] )
              ->setIsValid( true );
-        $manager->persist( $user );
+        $manager->persist( $user1 );
+
+        $user2 = new User();
+        $user2->setName( 'Administrateur' )
+              ->setApiToken( $this->encoder->encodePassword( $user2, 'test' ) )
+              ->setRoles( [ 'ROLE_ADMIN' ] )
+              ->setIsValid( true );
+        $manager->persist( $user2 );
         $manager->flush();
     }
 }
