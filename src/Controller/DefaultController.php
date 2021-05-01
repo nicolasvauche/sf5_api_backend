@@ -19,8 +19,8 @@ class DefaultController
     public function index(PostRepository $postRepository, SerializerInterface $serializer): Response
     {
         $posts = $postRepository->findAll();
-        $jsonAnswer = $serializer->serialize($posts, 'json');
+        $postsJson = $serializer->serialize($posts, 'json');
 
-        return new JsonResponse($jsonAnswer, 200, [], true);
+        return new JsonResponse($postsJson, 200, [], true);
     }
 }

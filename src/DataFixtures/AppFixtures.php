@@ -2,14 +2,22 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Post;
 use Faker;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures
     extends Fixture
 {
+    private $encoder;
+
+    public function __construct( UserPasswordEncoderInterface $encoder )
+    {
+        $this->encoder = $encoder;
+    }
 
     public function load( ObjectManager $manager )
     {
@@ -24,7 +32,14 @@ class AppFixtures
 
             $manager->persist( $posts[ $i ] );
         }
+        $manager->flush();
 
+        $user = new User();
+        $user->setName( 'Utilisateur test' )
+             ->setApiToken( $this->encoder->encodePassword( $user, 'test' ) )
+             ->setRoles( [ 'ROLE_USER' ] )
+             ->setIsValid( true );
+        $manager->persist( $user );
         $manager->flush();
     }
 }
